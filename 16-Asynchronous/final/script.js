@@ -428,8 +428,10 @@ const lotteryPromise = new Promise((resolve, reject) => {
   if (Math.random() > 0.5) {
     resolve('赢钱才是最恐怖的😡');
   } else {
-    reject('戒戒你好👋');
+    reject(new Error('戒戒你好😭'));
   }
+  // 我不行了我说为啥一直输钱。。
+  // 好像reject会显式输出（Uncaught in promise），resolve不会？
 });
 
 // 设置图片路径加载图片
