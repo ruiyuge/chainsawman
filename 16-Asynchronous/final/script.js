@@ -243,6 +243,26 @@ TEST COORDINATES 2: -33.933, 18.474
 GOOD LUCK 😀
 */
 
+function whereAmI() {
+  // fetch 返回一个promise 对象
+  fetch(
+    'https://geocode.xyz/51.50354,-0.12768?geoit=json&auth=325719903297107399794x15349',
+  )
+    .then(res => {
+      return res.json(); // 不知道为啥会返回一个promise🤷
+    })
+    .then(data => {
+      console.log(data);
+      // alert(`jump to ${data.osmtags.website}`);
+      console.log(`You are in ${data.city}, ${data.country}`);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+whereAmI();
+
 /*
 const whereAmI = function (lat, lng) {
   fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
@@ -403,6 +423,51 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 
 GOOD LUCK 😀
 */
+
+const lotteryPromise = new Promise((resolve, reject) => {
+  if (Math.random() > 0.5) {
+    resolve('赢钱才是最恐怖的😡');
+  } else {
+    reject('戒戒你好👋');
+  }
+});
+
+// 设置图片路径加载图片
+const createImage = function (imgPath) {
+  const img = document.createElement('img');
+  // 模拟延迟
+  setTimeout(() => {
+    img.src = imgPath;
+  }, 3 * 1000);
+  return img;
+};
+
+const createImagePromise = function (imgPath) {
+  return new Promise((resolve, reject) => {
+    // src一定要带.jpg后缀为啥
+    const img1 = createImage(imgPath);
+    if (img1) {
+      resolve(img1);
+    } else {
+      reject('errorrrrrrr');
+    }
+  });
+};
+
+createImagePromise('./img/img-1.jpg')
+  .then(img => {
+    console.dir(img);
+    document.body.appendChild(img);
+    return createImagePromise('./img/img-2.jpg');
+  })
+  .then(img2 => {
+    const img1 = document.getElementsByTagName('img')[0]
+    document.body.replaceChild(img2, img1);
+    // img1.parentNode.removeChild(img1);
+    // console.log('img1', img1);
+    
+  })
+  .catch(err => console.error(err));
 
 /*
 const wait = function (seconds) {
